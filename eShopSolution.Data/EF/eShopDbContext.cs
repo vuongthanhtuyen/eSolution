@@ -36,6 +36,7 @@ namespace eShopSolution.Data.EF
             //Data seeding
             modelBuilder.Seed();
             //base.OnModelCreating(modelBuilder);
+            // there is new database
         }
 
         public DbSet<Product> Products { get; set; }
