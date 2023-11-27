@@ -1,6 +1,9 @@
-﻿using eShopSolution.Data.Configurations;
+﻿//using eShopSolution.Data.Configurations;
+using eShopSolution.Data.Configurations;
 using eShopSolution.Data.Entities;
-using eShopSolution.Data.Extensions;
+// using eShopSolution.Data.Extensions;
+// using Microsoft.AspNetCore.Identity;
+// using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,11 +15,13 @@ namespace eShopSolution.Data.EF
     {
         public EShopDbContext(DbContextOptions options) : base(options)
         {
+
         }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+
         {
-            //Configure using Fluent API
             modelBuilder.ApplyConfiguration(new CartConfiguration());
 
             modelBuilder.ApplyConfiguration(new AppConfigConfiguration());
@@ -33,16 +38,18 @@ namespace eShopSolution.Data.EF
             modelBuilder.ApplyConfiguration(new PromotionConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
 
-            //Data seeding
-            modelBuilder.Seed();
-            //base.OnModelCreating(modelBuilder);
-        }
+            //modelBuilder.ApplyConfiguration(new AppUserConfiguration());
+            //modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
+            //modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
+            //modelBuilder.ApplyConfiguration(new SlideConfiguration());
 
+
+           // base.OnModelCreating(modelBuilder);     
+        }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<AppConfig> AppConfigs { get; set; }
-
 
         public DbSet<Cart> Carts { get; set; }
 
@@ -60,10 +67,10 @@ namespace eShopSolution.Data.EF
 
         public DbSet<Promotion> Promotions { get; set; }
 
-
         public DbSet<Transaction> Transactions { get; set; }
 
+        //public DbSet<ProductImage> ProductImages { get; set; }
 
-
+        //public DbSet<Slide> Slides { get; set; }
     }
 }
