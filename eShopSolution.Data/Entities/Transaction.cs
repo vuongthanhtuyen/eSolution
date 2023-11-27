@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Transactions;
 
 namespace eShopSolution.Data.Entities
 {
@@ -20,7 +19,7 @@ namespace eShopSolution.Data.Entities
 
         public Guid UserId { get; set; }
 
-        public AppUser AppUser { get; set; }
+        //public AppUser AppUser { get; set; }
 
     }
 }
