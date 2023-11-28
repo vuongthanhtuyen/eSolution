@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eShopSolution.Data.EF;
 
@@ -11,9 +12,11 @@ using eShopSolution.Data.EF;
 namespace eShopSolution.Data.Migrations
 {
     [DbContext(typeof(EShopDbContext))]
-    partial class EShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231128032637_AspNetCoreIdentityDatabase")]
+    partial class AspNetCoreIdentityDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,13 +102,6 @@ namespace eShopSolution.Data.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.ToTable("AppUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("7d24e79a-210b-4788-b7b6-d2a1aa192a02"),
-                            RoleId = new Guid("3917110d-c1c0-4659-9dde-05dc69855208")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -184,15 +180,6 @@ namespace eShopSolution.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("3917110d-c1c0-4659-9dde-05dc69855208"),
-                            Description = "Administrator role",
-                            Name = "admin",
-                            NormalizedName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("eShopSolution.Data.Entities.AppUser", b =>
@@ -259,27 +246,6 @@ namespace eShopSolution.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("7d24e79a-210b-4788-b7b6-d2a1aa192a02"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "0a3dc9ef-1f3d-452f-8944-94123262f5aa",
-                            Dob = new DateTime(2023, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "vuongthanhtuyen13579@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Tuyen",
-                            LastName = "Vuong",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "tedu.international@gmail.com",
-                            NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOZJqQkKb6GrqgcaPQKMD1GimrT8jRZ6wXgdWGijMI+6jDnzGvRHE9i7PM5GkzgFQg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("eShopSolution.Data.Entities.Cart", b =>
@@ -617,10 +583,10 @@ namespace eShopSolution.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            DateCreated = new DateTime(2023, 11, 28, 11, 19, 59, 404, DateTimeKind.Local).AddTicks(3267),
-                            OriginalPrice = 100000m,
-                            Price = 200000m,
+                            Id = 2,
+                            DateCreated = new DateTime(2023, 11, 28, 10, 26, 36, 951, DateTimeKind.Local).AddTicks(963),
+                            OriginalPrice = 150000m,
+                            Price = 300000m,
                             Stock = 0,
                             ViewCount = 0
                         });
@@ -643,8 +609,8 @@ namespace eShopSolution.Data.Migrations
                     b.HasData(
                         new
                         {
-                            CategoryId = 1,
-                            ProductId = 1
+                            CategoryId = 2,
+                            ProductId = 2
                         });
                 });
 
@@ -703,27 +669,27 @@ namespace eShopSolution.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Description = "Áo sơ mi nam trắng Việt Tiến",
-                            Details = "Áo sơ mi nam trắng Việt Tiến",
+                            Id = 3,
+                            Description = "Áo sơ mi nữ trắng Việt Tiến",
+                            Details = "Áo sơ mi nữ trắng Việt Tiến",
                             LanguageId = "vi-VN",
-                            Name = "Áo sơ mi nam trắng Việt Tiến",
-                            ProductId = 1,
-                            SeoAlias = "ao-so-mi-nam-trang-viet-tien",
-                            SeoDescription = "Áo sơ mi nam trắng Việt Tiến",
-                            SeoTitle = "Áo sơ mi nam trắng Việt Tiến"
+                            Name = "Áo sơ mi nữ Việt Tiến",
+                            ProductId = 2,
+                            SeoAlias = "ao-so-mi-nữ-trang-viet-tien",
+                            SeoDescription = "Áo sơ mi nữ trắng Việt Tiến",
+                            SeoTitle = "Áo sơ mi nữ trắng Việt Tiến"
                         },
                         new
                         {
-                            Id = 2,
-                            Description = "Viet Tien Men T-Shirt",
-                            Details = "Viet Tien Men T-Shirt",
+                            Id = 4,
+                            Description = "Viet Tien woman T-Shirt",
+                            Details = "Viet Tien woman T-Shirt",
                             LanguageId = "en-US",
-                            Name = "Viet Tien Men T-Shirt",
-                            ProductId = 1,
-                            SeoAlias = "viet-tien-men-t-shirt",
-                            SeoDescription = "Viet Tien Men T-Shirt",
-                            SeoTitle = "Viet Tien Men T-Shirt"
+                            Name = "Viet Tien woman T-Shirt",
+                            ProductId = 2,
+                            SeoAlias = "viet-tien-woman-t-shirt",
+                            SeoDescription = "Viet Tien woman T-Shirt",
+                            SeoTitle = "Viet Tien woman T-Shirt"
                         });
                 });
 
