@@ -1,5 +1,6 @@
 ﻿using eShopSolution.Data.Entities;
 using eShopSolution.Data.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -48,42 +49,77 @@ namespace eShopSolution.Data.Extensions
             modelBuilder.Entity<Product>().HasData(
            new Product()
            {
-               Id = 2,
+               Id = 1,
                DateCreated = DateTime.Now,
-               OriginalPrice = 150000,
-               Price = 300000,
+               OriginalPrice = 100000,
+               Price = 200000,
                Stock = 0,
                ViewCount = 0,
            });
             modelBuilder.Entity<ProductTranslation>().HasData(
                  new ProductTranslation()
                  {
-                     Id = 3,
-                     ProductId = 2,
-                     Name = "Áo sơ mi nữ Việt Tiến",
+                     Id = 1,
+                     ProductId = 1,
+                     Name = "Áo sơ mi nam trắng Việt Tiến",
                      LanguageId = "vi-VN",
-                     SeoAlias = "ao-so-mi-nữ-trang-viet-tien",
-                     SeoDescription = "Áo sơ mi nữ trắng Việt Tiến",
-                     SeoTitle = "Áo sơ mi nữ trắng Việt Tiến",
-                     Details = "Áo sơ mi nữ trắng Việt Tiến",
-                     Description = "Áo sơ mi nữ trắng Việt Tiến"
+                     SeoAlias = "ao-so-mi-nam-trang-viet-tien",
+                     SeoDescription = "Áo sơ mi nam trắng Việt Tiến",
+                     SeoTitle = "Áo sơ mi nam trắng Việt Tiến",
+                     Details = "Áo sơ mi nam trắng Việt Tiến",
+                     Description = "Áo sơ mi nam trắng Việt Tiến"
                  },
                     new ProductTranslation()
                     {
-                        Id = 4,
-                        ProductId = 2,
-                        Name = "Viet Tien woman T-Shirt",
+                        Id = 2,
+                        ProductId = 1,
+                        Name = "Viet Tien Men T-Shirt",
                         LanguageId = "en-US",
-                        SeoAlias = "viet-tien-woman-t-shirt",
-                        SeoDescription = "Viet Tien woman T-Shirt",
-                        SeoTitle = "Viet Tien woman T-Shirt",
-                        Details = "Viet Tien woman T-Shirt",
-                        Description = "Viet Tien woman T-Shirt"
+                        SeoAlias = "viet-tien-men-t-shirt",
+                        SeoDescription = "Viet Tien Men T-Shirt",
+                        SeoTitle = "Viet Tien Men T-Shirt",
+                        Details = "Viet Tien Men T-Shirt",
+                        Description = "Viet Tien Men T-Shirt"
                     });
             modelBuilder.Entity<ProductInCategory>().HasData(
-                new ProductInCategory() { ProductId = 2, CategoryId = 2 }
+                new ProductInCategory() { ProductId = 1, CategoryId = 1 }
                 );
+
+            // any guid
+            var roleId = new  Guid("3917110D-C1C0-4659-9DDE-05DC69855208");
+            var adminId = new Guid("7D24E79A-210B-4788-B7B6-D2A1AA192A02");
+            modelBuilder.Entity<AppRole>().HasData(new AppRole
+            {
+                Id = roleId,
+                Name = "admin",
+                NormalizedName = "admin",
+                Description = "Administrator role"
+            });
+
+            var hasher = new PasswordHasher<AppUser>();
+            modelBuilder.Entity<AppUser>().HasData(new AppUser
+            {
+                Id = adminId,
+                UserName = "admin",
+                NormalizedUserName = "admin",
+                Email = "vuongthanhtuyen13579@gmail.com",
+                NormalizedEmail = "tedu.international@gmail.com",
+                EmailConfirmed = true,
+                PasswordHash = hasher.HashPassword(null, "Abcd1234$"),
+                SecurityStamp = string.Empty,
+                FirstName = "Tuyen",
+                LastName = "Vuong",
+                Dob = new DateTime(2023, 01, 31)
+            });
+
+            modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
+            {
+                RoleId = roleId,
+                UserId = adminId
+            });
         }
+
+
 
 
     }

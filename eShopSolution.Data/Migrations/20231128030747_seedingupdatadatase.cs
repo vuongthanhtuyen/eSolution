@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace eShopSolution.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class seedingnew : Migration
+    public partial class seedingupdatadatase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -44,7 +44,7 @@ namespace eShopSolution.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "DateCreated", "IsFeatured", "OriginalPrice", "Price" },
-                values: new object[] { 2, new DateTime(2023, 11, 27, 20, 38, 25, 872, DateTimeKind.Local).AddTicks(410), null, 150000m, 300000m });
+                values: new object[] { 2, new DateTime(2023, 11, 28, 10, 7, 47, 384, DateTimeKind.Local).AddTicks(525), null, 150000m, 300000m });
 
             migrationBuilder.InsertData(
                 table: "CategoryTranslations",
