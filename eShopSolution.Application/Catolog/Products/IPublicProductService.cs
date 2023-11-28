@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GetProductPagingRequest = eShopSolution.Application.Catolog.Products.Dtos.Public.GetProductPagingRequest;
 
 namespace eShopSolution.Application.Catolog.Products
 {
     public interface IPublicProductService
     {
-        public PageViewModel<ProductViewModel> GetAllByCatetoty( int categoryId, int pageIndex, int pageSize);
+        public PageResult<ProductViewModel> GetAllByCatetoty( GetProductPagingRequest request);
     }
 }

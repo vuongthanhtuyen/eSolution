@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace eShopSolution.Application.Catolog.Products
 {
-    internal class PublicProductService
+    public class PublicProductService
     {
+        public int categoryId { get; set; }
+
     }
 }
