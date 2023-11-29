@@ -11,6 +11,6 @@ namespace eShopSolution.Application.Catolog.Products
 {
     public interface IPublicProductService
     {
-        public PageResult<ProductViewModel> GetAllByCatetoty( GetProductPagingRequest request);
+        public Task< PageResult<ProductViewModel>> GetAllByCatetoty( GetProductPagingRequest request);
     }
 }

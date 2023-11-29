@@ -9,6 +9,6 @@ namespace eShopSolution.Application.Catolog.Products.Dtos.Public
 {
     public class GetProductPagingRequest : PagingRequestBase
     {
-        p
+        public int? CategoryId { get; set; }
     }
 }
