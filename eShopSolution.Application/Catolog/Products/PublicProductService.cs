@@ -1,7 +1,7 @@
-﻿using eShopSolution.Application.Catolog.Products.Dtos;
-using eShopSolution.Application.Catolog.Products.Dtos.Public;
-using eShopSolution.Application.Dtos;
-using eShopSolution.Data.EF;
+﻿using eShopSolution.Data.EF;
+using eShopSolution.ViewModels.Catalog.Products.Manage;
+using eShopSolution.ViewModels.Catalog.Products.Products;
+using eShopSolution.ViewModels.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace eShopSolution.Application.Catolog.Products
         public int categoryId { get; set; }
 
 
-        public async Task<PageResult<ProductViewModel>> IPublicProductService.GetAllByCatetoty(GetProductPagingRequest request)
+        public async Task<PageResult<ProductViewModel>> GetAllByCatetoty(GetPublicProductPagingRequest request)
         {
             // 1. seclet jonnh
             var quety = from p in _context.Products
