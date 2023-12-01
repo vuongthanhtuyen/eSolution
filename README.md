@@ -6,7 +6,11 @@
 - Microsoft.EntityFrameworkCore.SqlServe
 - Microsoft.EntityFrameworkCore.Design
 - Microsoft.EntityFrameworkCore.Tools
+- Microsoft.AspNetCore.Http.Features (when use IfileImage)
+- Microsoft.AspNetCore.Hosting.Abstractions ( ) 
+- 
 ## Youtobe tuotial
 ## How to configure and run
 ## How to contribute
 ## Why I can't see you at Gitweb
+## use: IWebHostEnvironment Click edit file and at   <ItemGroup> <FrameworkReference Include=" Microsoft.AspNetCore.App"/> </ItemGroup>
