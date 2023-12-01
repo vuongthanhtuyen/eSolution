@@ -1,5 +1,4 @@
-﻿using eShopSolution.ViewModels.Catalog.Products.Manage;
-using eShopSolution.ViewModels.Catalog.Products.Products;
+﻿using eShopSolution.ViewModels.Catalog.Products;
 using eShopSolution.ViewModels.Common;
 using System;
 using System.Collections.Generic;
@@ -12,5 +11,7 @@ namespace eShopSolution.Application.Catolog.Products
     public interface IPublicProductService
     {
         public Task< PageResult<ProductViewModel>> GetAllByCatetoty( GetPublicProductPagingRequest request);
+        public Task<List<ProductViewModel>> GetAll();
     }
+
 }

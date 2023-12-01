@@ -1,9 +1,5 @@
 ﻿using eShopSolution.ViewModels.Catalog.ProductImages;
 using eShopSolution.ViewModels.Catalog.Products;
-using eShopSolution.ViewModels.Catalog.Products.Manage;
-using eShopSolution.ViewModels.Catalog.Products.ProductImages;
-using eShopSolution.ViewModels.Catalog.Products.Products;
-using eShopSolution.ViewModels.Catolog.Products.Dtos.Manage;
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -11,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GetManageProductPagingRequest = eShopSolution.ViewModels.Catalog.Products.Manage.GetManageProductPagingRequest;
+using GetManageProductPagingRequest = eShopSolution.ViewModels.Catalog.Products.GetManageProductPagingRequest;
 
 namespace eShopSolution.Application.Catolog.Products
 {
