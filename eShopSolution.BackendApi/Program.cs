@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using eShopSolution.Utilities.Constants;
 var builder = WebApplication.CreateBuilder(args);
 //ConfigureService in Startup
 builder.Services.AddControllers();
@@ -44,7 +45,7 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-var connectionString = configuration.GetConnectionString("eShopSolutionDb");
+var connectionString = configuration.GetConnectionString(SystemConstants.MainConnectionString);
 builder.Services.AddDbContext<EShopDbContext>(options =>
 {
     options.UseSqlServer(connectionString); // Cấu hình kết nối đến cơ sở dữ liệu của bạn
