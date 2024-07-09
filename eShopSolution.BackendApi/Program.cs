@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using eShopSolution.Utilities.Constants;
+using eShopSolution.Application.Common;
 var builder = WebApplication.CreateBuilder(args);
 //ConfigureService in Startup
 builder.Services.AddControllers();
@@ -51,13 +52,15 @@ builder.Services.AddDbContext<EShopDbContext>(options =>
     options.UseSqlServer(connectionString); // Cấu hình kết nối đến cơ sở dữ liệu của bạn
 });
 
+//Declare DI
+builder.Services.AddTransient<IStorageService, FileStorageService>();
+
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+// có nghĩa là: nếu chúng ta yêu cầu IPublixProducServide thì nó sẽ trả về PublicProducService
 builder.Services.AddTransient<IPublicProductService, PublicProductService>();
-//builder.Services.AddTransient<IUserApiClient, UserApiClient>();
-//builder.Services.AddTransient<IRoleApiClient, RoleApiClient>();
-//builder.Services.AddTransient<ILanguageApiClient, LanguageApiClient>();
-//builder.Services.AddTransient<IProductApiClient, ProductApiClient>();
-//builder.Services.AddTransient<ICategoryApiClient, CategoryApiClient>();
+builder.Services.AddTransient<IManageProductService, ManageProductService>();
+
 builder.Services.AddRazorPages();
 
 

@@ -13,6 +13,8 @@ namespace eShopSolution.Application.Catolog.Products
 {
     public interface IManageProductService
     {
+        Task<ProductViewModel> GetById(int productId, string languageId);
+
         Task<int> Create(ProductCreateRequest request);
 
         Task<int> Update(ProductUpdateRequest request);
