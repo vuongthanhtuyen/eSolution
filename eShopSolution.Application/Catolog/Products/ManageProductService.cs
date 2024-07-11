@@ -294,5 +294,7 @@ namespace eShopSolution.Application.Catolog.Products
             return fileName;
         }
 
+
+
     }
 }
