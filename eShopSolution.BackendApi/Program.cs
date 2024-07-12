@@ -15,6 +15,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using eShopSolution.Utilities.Constants;
 using eShopSolution.Application.Common;
+using Microsoft.AspNetCore.Identity;
+using eShopSolution.Data.Entities;
+using eShopSolution.ViewModels.System.User;
+using eShopSolution.Application.System.Users;
 var builder = WebApplication.CreateBuilder(args);
 //ConfigureService in Startup
 builder.Services.AddControllers();
@@ -54,13 +58,18 @@ builder.Services.AddDbContext<EShopDbContext>(options =>
 
 //Declare DI
 builder.Services.AddTransient<IStorageService, FileStorageService>();
-
+builder.Services.AddIdentity<AppUser, AppRole>()
+    .AddEntityFrameworkStores< EShopDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 // có nghĩa là: nếu chúng ta yêu cầu IPublixProducServide thì nó sẽ trả về PublicProducService
 builder.Services.AddTransient<IPublicProductService, PublicProductService>();
 builder.Services.AddTransient<IManageProductService, ManageProductService>();
-
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+builder.Services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
+builder.Services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
 builder.Services.AddRazorPages();
 
 
