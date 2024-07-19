@@ -13,7 +13,7 @@ namespace eShopSolution.ViewModels.System.User
         public LoginRequestValidator() {
             RuleFor(x => x.UserName).NotEmpty().WithMessage("User name is required");
             RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required")
-                .MinimumLength(6).WithMessage("Password is at least 6 characters");
+                .MinimumLength(3).WithMessage("Password is at least 3 characters");
         }
     }
 }
