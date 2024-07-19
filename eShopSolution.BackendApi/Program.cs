@@ -26,6 +26,8 @@ string signingKey = configuration.GetValue<string>("Tokens:Key");
 
 // Đăng ký dịch vụ
 //Declare DI
+
+builder.Services.AddHttpClient();
 builder.Services.AddTransient<IStorageService, FileStorageService>();
 builder.Services.AddIdentity<AppUser, AppRole>()
     .AddEntityFrameworkStores<EShopDbContext>()
