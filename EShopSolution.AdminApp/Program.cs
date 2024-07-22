@@ -2,6 +2,7 @@ using eShopSolution.ViewModels.System.User;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using EShopSolution.AdminApp.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,12 @@ builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 builder.Services.AddTransient<IUserApiClient, UserApiClient > ();
 
 builder.Services.AddHttpClient();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/User/Login/";
+        options.AccessDeniedPath = "/User/Forbidden/";
+    });
 
 var app = builder.Build();
 
@@ -36,6 +43,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
