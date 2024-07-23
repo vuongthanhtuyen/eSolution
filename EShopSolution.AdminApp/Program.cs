@@ -3,11 +3,17 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using EShopSolution.AdminApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using eShopSolution.AdminApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSession(option =>
+{
+    option.IdleTimeout = TimeSpan.FromSeconds(30);
+});
 
 
 builder.Services.AddRazorPages()
@@ -44,8 +50,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();
-
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

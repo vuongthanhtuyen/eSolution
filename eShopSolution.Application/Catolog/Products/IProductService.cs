@@ -11,14 +11,15 @@ using GetManageProductPagingRequest = eShopSolution.ViewModels.Catalog.Products.
 
 namespace eShopSolution.Application.Catolog.Products
 {
-    public interface IManageProductService
+    public interface IProductService
     {
-        Task<ProductViewModel> GetById(int productId, string languageId);
 
         Task<int> Create(ProductCreateRequest request);
 
         Task<int> Update(ProductUpdateRequest request);
         Task<int> Delete(int id);
+        Task<ProductViewModel> GetById(int productId, string languageId);
+
         Task<bool> UpdatePrice(int productId, decimal newPrice);
         Task<bool> UpdateStock(int productId, int addedQuantity);
 
@@ -30,5 +31,8 @@ namespace eShopSolution.Application.Catolog.Products
 
         Task<ProductImageViewModel> GetImageById(int productId);
         Task<List<ProductImageViewModel>> GetListImage(int ProductId);
+        Task<PageResult<ProductViewModel>> GetAllByCategoryId(string languageId, GetPublicProductPagingRequest request);
+
+
     }
 }

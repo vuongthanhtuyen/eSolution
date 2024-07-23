@@ -1,4 +1,5 @@
-﻿using eShopSolution.ViewModels.System.User;
+﻿using eShopSolution.ViewModels.Catalog.Products;
+using eShopSolution.ViewModels.System.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ namespace eShopSolution.BackendApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -21,13 +23,15 @@ namespace eShopSolution.BackendApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _userService.Authencate(request);
+            var resultToken = await _userService.Authencate(request);
 
-            if (string.IsNullOrEmpty(result))
+
+            if (string.IsNullOrEmpty(resultToken))
             {
-                return BadRequest(result);
+                return BadRequest("Username or password is incorrect.");
+
             }
-            return Ok(result);
+            return Ok(resultToken);
         }
 
         [HttpPost]
@@ -44,6 +48,14 @@ namespace eShopSolution.BackendApi.Controllers
             }
             return Ok(result);
         }
+
+        //http://localhost/api/users/paging?pageIndex=1&pageSize=10&keyword=
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetAllPaging ( [FromQuery]GetUserPagingRequest request)
+        {
+            var product = await _userService.GetUserPaging( request);
+            return Ok(product);    
+        } 
 
     }
 }

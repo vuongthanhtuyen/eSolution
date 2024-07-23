@@ -8,6 +8,8 @@ using System.Text;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Diagnostics.Eventing.Reader;
+using eShopSolution.ViewModels.Common;
 
 namespace EShopSolution.AdminApp.Controllers
 {
@@ -22,11 +24,37 @@ namespace EShopSolution.AdminApp.Controllers
             _configuration = configuration;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
-            return View();
-        }
+            var session = HttpContext.Session.GetString("Token");
+            if (string.IsNullOrEmpty(session))
+            {
+                return RedirectToAction("Login", "User");
+            }
 
+            var request = new GetUserPagingRequest()
+            {
+                BearerToken = session,
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+
+            var data = await _userApiClient.GetUsersPagings(request);
+
+            // Kiểm tra nếu data là null hoặc không có dữ liệu
+            if (data == null || data.Items == null || !data.Items.Any())
+            {
+                // Truyền một đối tượng PageResult rỗng để tránh lỗi null trong view
+                data = new PageResult<UserViewModel>
+                {
+                    Items = new List<UserViewModel>(),
+                    TotalRecord = 0
+                };
+            }
+
+            return View(data);
+        }
         [HttpGet]
         public async Task<IActionResult> Login()
         {
@@ -48,6 +76,7 @@ namespace EShopSolution.AdminApp.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                 IsPersistent = false
             };
+            HttpContext.Session.SetString("Token", token);
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 userPrincipal,
@@ -60,7 +89,8 @@ namespace EShopSolution.AdminApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync( CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Remove("Token");
             return RedirectToAction("Login", "User");
         }
         private ClaimsPrincipal ValidateToken(string jwtToken)
