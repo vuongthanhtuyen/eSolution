@@ -23,13 +23,13 @@ builder.Services.AddFluentValidationAutoValidation()
         .AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 
-builder.Services.AddTransient<IUserApiClient, UserApiClient > ();
+builder.Services.AddTransient<IUserApiClient, UserApiClient>();
 
 builder.Services.AddHttpClient();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/User/Login/";
+        options.LoginPath = "/Login/Index/";
         options.AccessDeniedPath = "/User/Forbidden/";
     });
 
