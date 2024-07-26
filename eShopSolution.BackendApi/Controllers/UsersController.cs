@@ -12,7 +12,8 @@ namespace eShopSolution.BackendApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UsersController(IUserService userService) {
+        public UsersController(IUserService userService)
+        {
             _userService = userService;
         }
 
@@ -23,15 +24,15 @@ namespace eShopSolution.BackendApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var resultToken = await _userService.Authencate(request);
+            var result = await _userService.Authencate(request);
 
 
-            if (string.IsNullOrEmpty(resultToken))
+            if (string.IsNullOrEmpty(result.ResultObj))
             {
                 return BadRequest("Username or password is incorrect.");
 
             }
-            return Ok(resultToken);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -42,7 +43,7 @@ namespace eShopSolution.BackendApi.Controllers
                 return BadRequest(ModelState);
 
             var result = await _userService.Register(request);
-            if (!result)
+            if (!result.IsSuccessed)
             {
                 return BadRequest(result);
             }
@@ -51,11 +52,32 @@ namespace eShopSolution.BackendApi.Controllers
 
         //http://localhost/api/users/paging?pageIndex=1&pageSize=10&keyword=
         [HttpGet("paging")]
-        public async Task<IActionResult> GetAllPaging ( [FromQuery]GetUserPagingRequest request)
+        public async Task<IActionResult> GetAllPaging([FromQuery] GetUserPagingRequest request)
         {
-            var product = await _userService.GetUserPaging( request);
-            return Ok(product);    
-        } 
+            var product = await _userService.GetUserPaging(request);
+            return Ok(product);
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UserUpdateRequest request)
+        {
+            // check model gửi lên có đúng yêu cầu, nếu đúng thì thực thi câu lệnh trong application
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            var result = await _userService.Update(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+
+            }
+            return Ok(result);
+
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var user = await _userService.GetById(id);
+            return Ok(user);
+        }
     }
 }

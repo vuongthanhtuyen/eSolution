@@ -23,6 +23,7 @@ builder.Services.AddFluentValidationAutoValidation()
         .AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IUserApiClient, UserApiClient>();
 
 builder.Services.AddHttpClient();
