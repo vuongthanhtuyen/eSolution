@@ -21,7 +21,7 @@ namespace EShopSolution.AdminApp.Controllers
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 1)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
             var session = HttpContext.Session.GetString("Token");
 
@@ -110,6 +110,14 @@ namespace EShopSolution.AdminApp.Controllers
         {
             var result = await _userApiClient.GetById(id);
             return View(result.ResultObj);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _userApiClient.Delete(id);
+            return RedirectToAction("Index", "User");
         }
 
 
