@@ -41,24 +41,44 @@ namespace eShopSolution.AdminApp.Controllers
         public async Task<IActionResult> Index(LoginRequest request)
         {
             if (!ModelState.IsValid)
-                return View(ModelState);
-
-            var result = await _userApiClient.Authenticate(request);
-
-            var userPrincipal = this.ValidateToken(result.ResultObj);
-            var authProperties = new AuthenticationProperties
             {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                IsPersistent = false
-            };
-            HttpContext.Session.SetString("Token", result.ResultObj);
-            await HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        userPrincipal,
-                        authProperties);
+                return View(ModelState);
+            }
 
-            return RedirectToAction("Index", "Home");
+            try
+            {
+                var result = await _userApiClient.Authenticate(request);
+
+                if (result.ResultObj == null)
+                {
+                    ModelState.AddModelError("", result.Message);
+                    return View();
+                }
+
+                var userPrincipal = this.ValidateToken(result.ResultObj);
+                var authProperties = new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                    IsPersistent = false
+                };
+
+                HttpContext.Session.SetString("Token", result.ResultObj);
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    userPrincipal,
+                    authProperties);
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.WriteLine("An error occurred during authentication: " + ex.Message);
+                ModelState.AddModelError("", "Mật khẩu hoặc tài khoản không đúng");
+                return View();
+            }
         }
+
 
         private ClaimsPrincipal ValidateToken(string jwtToken)
         {

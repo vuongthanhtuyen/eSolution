@@ -29,7 +29,6 @@ namespace eShopSolution.AdminApp.Services
             _httpClientFactory = httpClientFactory;
             _httpContextAccessor = httpContextAccessor;
         }
-
         public async Task<ApiResult<string>> Authenticate(LoginRequest request)
         {
             var json = JsonConvert.SerializeObject(request);
@@ -39,13 +38,35 @@ namespace eShopSolution.AdminApp.Services
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             var response = await client.PostAsync("/api/Users/authenticate", httpContent);
 
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(responseContent);  // Log the raw response for debugging
+
             if (response.IsSuccessStatusCode)
             {
-                return JsonConvert.DeserializeObject<ApiSeccessResult<string>>(await response.Content.ReadAsStringAsync());
+                try
+                {
+                    return JsonConvert.DeserializeObject<ApiSeccessResult<string>>(responseContent);
+                }
+                catch (JsonReaderException ex)
+                {
+                    // Log the exception and response content
+                    Console.WriteLine("JSON parsing error: " + ex.Message);
+                    Console.WriteLine("Response content: " + responseContent);
+                    throw new Exception("An error occurred while processing the successful response.");
+                }
             }
 
-
-            return JsonConvert.DeserializeObject<ApiErrorResult<string>>(await response.Content.ReadAsStringAsync());
+            try
+            {
+                return JsonConvert.DeserializeObject<ApiErrorResult<string>>(responseContent);
+            }
+            catch (JsonReaderException ex)
+            {
+                // Log the exception and response content
+                Console.WriteLine("JSON parsing error: " + ex.Message);
+                Console.WriteLine("Response content: " + responseContent);
+                throw new Exception("An error occurred while processing the error response.");
+            }
         }
 
         public async Task<ApiResult<bool>> Delete(Guid id)

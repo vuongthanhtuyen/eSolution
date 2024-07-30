@@ -21,8 +21,9 @@ namespace EShopSolution.AdminApp.Controllers
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 1)
         {
+            ViewBag.Keyword = keyword;
             var session = HttpContext.Session.GetString("Token");
 
             if (string.IsNullOrEmpty(session))
