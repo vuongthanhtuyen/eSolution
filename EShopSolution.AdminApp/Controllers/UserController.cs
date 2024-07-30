@@ -23,7 +23,7 @@ namespace EShopSolution.AdminApp.Controllers
 
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 1)
         {
-            ViewBag.Keyword = keyword;
+            
             var session = HttpContext.Session.GetString("Token");
 
             if (string.IsNullOrEmpty(session))
@@ -38,6 +38,12 @@ namespace EShopSolution.AdminApp.Controllers
                 PageIndex = pageIndex,
                 PageSize = pageSize
             };
+
+            ViewBag.Keyword = keyword;
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMSG = TempData["result"];
+            }
 
 
             var data = await _userApiClient.GetUsersPagings(request);
@@ -60,7 +66,10 @@ namespace EShopSolution.AdminApp.Controllers
             }
             var result = await _userApiClient.RegisterUser(request);
             if (result.IsSuccessed)
+            {
+                TempData["result"] = "Thêm mới người dùng thành công";
                 return RedirectToAction("Index");
+            }    
 
             ModelState.AddModelError("", result.Message);
             return View(result);
@@ -99,6 +108,8 @@ namespace EShopSolution.AdminApp.Controllers
             var result = await _userApiClient.UpdateUser(request.Id, request);
             if (result.IsSuccessed)
             {
+                TempData["result"] = "Cập nhật người dùng thành công";
+
                 return RedirectToAction("Index");
             }
             ModelState.AddModelError("", result.Message);
@@ -118,7 +129,14 @@ namespace EShopSolution.AdminApp.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await _userApiClient.Delete(id);
-            return RedirectToAction("Index", "User");
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Xóa người dùng thành công";
+                return RedirectToAction("Index", "User");
+
+            }
+            ModelState.AddModelError("",result.Message);    
+            return View(result);
         }
 
 
