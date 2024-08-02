@@ -80,6 +80,7 @@
                 <tbody>
                     @foreach (var item in Model.Items)
                     {
+
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.FirstName)
@@ -97,18 +98,20 @@
                                 @Html.DisplayFor(modelItem => item.Email)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
 
 
                                 @{
                                     vitem = "delete" + item.Id;
                                 }
-                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#@vitem">
+                                @Html.ActionLink("Sửa", "Edit", new {  id=item.Id }) |
+                                @Html.ActionLink("Xem", "Details", new { id = item.Id }) |
+                                <button type="button" class="btn-link" style="border:none" data-toggle="modal" data-target="#@vitem">
                                     Xóa
 
-                                </button>
+                                </button>|
+                                @Html.ActionLink("Gán quyền", "RoleAssign", new { id = item.Id })
+
+
 
 
                                 <div class="modal fade" id="@vitem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

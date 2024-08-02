@@ -1,12 +1,14 @@
 ﻿using eShopSolution.Data.Entities;
 using eShopSolution.ViewModels.Common;
 using eShopSolution.ViewModels.System.User;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -156,6 +158,7 @@ namespace eShopSolution.Application.System.Users
                 return new ApiErrorResult<UserViewModel>("User Không tồn tại");
             }
 
+            var roles = await _userManager.GetRolesAsync(user);
             var userVM = new UserViewModel()
             {
                 Email = user.Email,
@@ -164,7 +167,8 @@ namespace eShopSolution.Application.System.Users
                 Dob = user.Dob,
                 Id = user.Id,
                 PhoneNumber = user.PhoneNumber,
-                UserName = user.UserName
+                UserName = user.UserName,
+                Roles = roles
             };
             return new ApiSeccessResult<UserViewModel>(userVM);
         }
@@ -179,6 +183,37 @@ namespace eShopSolution.Application.System.Users
             await _userManager.DeleteAsync(user);
             return new ApiSeccessResult<bool>();
 
+        }
+
+        public async Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return new ApiErrorResult<bool>("User Không tồn tại");
+            }
+
+            var removedRoles = request.Roles.Where(x => x.Selected == false).Select(x => x.Name).ToList();
+            foreach (var roleName in removedRoles) 
+            {
+                if (await _userManager.IsInRoleAsync(user, roleName) == true)
+                {
+                    await _userManager.RemoveFromRoleAsync(user, roleName);
+
+                }
+            }
+            await _userManager.RemoveFromRolesAsync(user, removedRoles);
+            
+            var addRoles = request.Roles.Where(x=> x.Selected).Select(x=>x.Name).ToList();
+
+            foreach (var roleName in addRoles)
+            {
+                if(await _userManager.IsInRoleAsync(user,roleName)== false)
+                {
+                    await _userManager.AddToRoleAsync(user, roleName);
+                }
+            }
+            return new ApiSeccessResult<bool>();
         }
     }
 }
