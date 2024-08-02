@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.WebSockets;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -71,6 +72,7 @@ namespace eShopSolution.AdminApp.Services
 
         public async Task<ApiResult<bool>> Delete(Guid id)
         {
+
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
 

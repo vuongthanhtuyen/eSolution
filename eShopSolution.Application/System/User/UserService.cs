@@ -12,7 +12,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace eShopSolution.Application.System.Users
 {
     public class UserService : IUserService
@@ -21,14 +20,17 @@ namespace eShopSolution.Application.System.Users
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<AppRole> _roleManager;
         private readonly IConfiguration _config;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
 
         public UserService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-            RoleManager<AppRole> roleManager, IConfiguration config)
+            RoleManager<AppRole> roleManager, IConfiguration config, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _config = config;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ApiResult<string>> Authencate(LoginRequest request)
@@ -47,7 +49,9 @@ namespace eShopSolution.Application.System.Users
                 new Claim(ClaimTypes.Email,user.Email),
                 new Claim(ClaimTypes.GivenName,user.FirstName),
                 new Claim(ClaimTypes.Role, string.Join(";",roles)),
-                new Claim(ClaimTypes.Name, request.UserName)
+                new Claim(ClaimTypes.Name, request.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()) // Thêm ClaimTypes.NameIdentifier để lưu ID người dùng
+
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -100,7 +104,7 @@ namespace eShopSolution.Application.System.Users
 
         public async Task<ApiResult<bool>> Register(RegisterRequest request)
         {
-            var user = await _userManager.FindByEmailAsync(request.UserName);
+            var user = await _userManager.FindByNameAsync(request.UserName);
             if(user != null)
             {
                 return new ApiErrorResult<bool>("Tài khoản đã tồn tại");
@@ -175,6 +179,13 @@ namespace eShopSolution.Application.System.Users
 
         public async Task<ApiResult<bool>> Delete(Guid id)
         {
+            var currentUserId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (currentUserId == id.ToString())
+            {
+                return new ApiErrorResult<bool>("Không thể xóa tài khoản đang đăng nhập");
+
+            }
+
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null) 
             {
