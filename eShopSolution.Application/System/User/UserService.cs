@@ -198,6 +198,9 @@ namespace eShopSolution.Application.System.Users
 
         public async Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request)
         {
+
+            var currentUserId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null)
             {
@@ -205,12 +208,25 @@ namespace eShopSolution.Application.System.Users
             }
 
             var removedRoles = request.Roles.Where(x => x.Selected == false).Select(x => x.Name).ToList();
+            if (currentUserId == id.ToString())
+            {
+                foreach (var roleName in removedRoles)
+                {
+                    if (roleName == "admin")
+                    {
+                        return new ApiErrorResult<bool>("Không thể gỡ quyền admin của user hiện tại");
+                    }
+                }
+            
+            }
+
+            var ckeckAdmin = false;
             foreach (var roleName in removedRoles) 
             {
                 if (await _userManager.IsInRoleAsync(user, roleName) == true)
                 {
-                    await _userManager.RemoveFromRoleAsync(user, roleName);
 
+                    await _userManager.RemoveFromRoleAsync(user, roleName);
                 }
             }
             await _userManager.RemoveFromRolesAsync(user, removedRoles);
@@ -224,6 +240,7 @@ namespace eShopSolution.Application.System.Users
                     await _userManager.AddToRoleAsync(user, roleName);
                 }
             }
+
             return new ApiSeccessResult<bool>();
         }
     }

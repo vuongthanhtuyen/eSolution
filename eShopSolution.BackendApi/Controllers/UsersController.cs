@@ -87,7 +87,12 @@ namespace eShopSolution.BackendApi.Controllers
 
 
             var result = await _userService.Delete(id);
-            return Ok(result);
+            if (result.IsSuccessed)
+            {
+                return Ok(result);
+
+            }
+            return BadRequest(result);
         }
         [HttpPut("{id}/roles")]
         public async Task<IActionResult> RoleAssign(Guid id, [FromBody] RoleAssignRequest request)

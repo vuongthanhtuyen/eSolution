@@ -138,8 +138,9 @@ namespace EShopSolution.AdminApp.Controllers
                 return RedirectToAction("Index", "User");
 
             }
-            ModelState.AddModelError("",result.Message);    
-            return View(result);
+            //ModelState.AddModelError("",);
+            TempData["result"] = result.Message +"";
+            return RedirectToAction("Index", "User");
         }
 
 
@@ -174,10 +175,10 @@ namespace EShopSolution.AdminApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ModelState.AddModelError("", result.Message);
+            TempData["result"] = result.Message;
 
-            var roleAssignRequest = await GetRoleAssignRequest(request.Id);
-            return View(roleAssignRequest);
+            //var roleAssignRequest = await GetRoleAssignRequest(request.Id);
+            return RedirectToAction("Index");
 
         }
         private async Task<RoleAssignRequest> GetRoleAssignRequest(Guid id)
