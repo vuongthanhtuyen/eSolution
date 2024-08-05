@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using eShopSolution.Application.System.Roles;
+using eShopSolution.Application.System.Languages;
 
 var builder = WebApplication.CreateBuilder(args);
 //ConfigureService in Startup
@@ -39,6 +40,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRoleService, RoleService>();
+builder.Services.AddTransient<ILanguageService, LanguageService>();
 builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
 builder.Services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
 builder.Services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();

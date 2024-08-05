@@ -27,6 +27,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IUserApiClient, UserApiClient>();
 builder.Services.AddTransient<IRoleApiClient, RoleApiClient>();
+builder.Services.AddTransient<ILanguageApiClient, LanguageApiClient>();
 
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();

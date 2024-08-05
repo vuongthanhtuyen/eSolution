@@ -6,6 +6,22 @@ using System.Net.Http.Headers;
 
 namespace EShopSolution.AdminApp.Services
 {
+
+
+    //public class RoleApiClient : BaseApiClient, IRoleApiClient
+    //{
+    //    public RoleApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+    //: base(httpClientFactory, configuration, httpContextAccessor)
+    //    {
+    //    }
+
+
+    //    public async Task<ApiResult<List<RoleViewModel>>> GetAll()
+    //    {
+    //        return await GetAsync<ApiResult<List<RoleViewModel>>>("/api/Roles");
+    //    }
+    //}
+
     public class RoleApiClient : IRoleApiClient
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -39,8 +55,5 @@ namespace EShopSolution.AdminApp.Services
 
             return JsonConvert.DeserializeObject<ApiErrorResult<List<RoleViewModel>>>(body);
         }
-
-
-
     }
 }
